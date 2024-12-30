@@ -1,11 +1,12 @@
 import SidebarLayout from "@/Layouts/SidebarLayout.jsx";
 import {Head} from "@inertiajs/react";
 import QuizCategoriesItem from "@/Components/Quizzes/QuizCategoriesItem.jsx";
+import QuizCategoryItem from "@/Components/Quizzes/QuizCategoryItem.jsx";
 
-export default function QuizCategories({ categories }) {
+export default function QuizCategories({ quizzes }) {
     return (
         <SidebarLayout>
-            <Head title="Quiz Categories" />
+            <Head title="Quizzes" />
 
                 <div className="mx-auto max-w-10xl">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
@@ -20,17 +21,17 @@ export default function QuizCategories({ categories }) {
                                     2xl:grid-cols-5
                                     grid-flow-row gap-4"
                             >
-                                {Array.isArray(categories) && categories.length > 0 ? (
+                                {Array.isArray(quizzes) && quizzes.length > 0 ? (
                                     <>
-                                        {categories.map((category) => (
-                                            <QuizCategoriesItem
-                                                key={category.id}
-                                                category={category}
+                                        {quizzes.map((quiz) => (
+                                            <QuizCategoryItem
+                                                key={quiz.id}
+                                                quiz={quiz}
                                             />
                                         ))}
                                     </>
                                 ) : (
-                                    <p className="text-gray-500">No categories available.</p>
+                                    <p className="text-gray-500">No quizzes available in this category.</p>
                                 )}
                             </div>
                         </div>

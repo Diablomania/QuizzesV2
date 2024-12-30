@@ -4,7 +4,7 @@ import SidebarLayout from "@/Layouts/SidebarLayout.jsx";
 export default function Dashboard() {
     return (
         <SidebarLayout>
-            <Head title="Dashboard" />
+            <Head title="Dashboard"/>
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -15,6 +15,7 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
+
         </SidebarLayout>
     );
 }
