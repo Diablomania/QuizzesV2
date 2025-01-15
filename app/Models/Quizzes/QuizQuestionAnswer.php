@@ -5,7 +5,7 @@ namespace App\Models\Quizzes;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $quizzes_questions_id
@@ -35,6 +35,11 @@ class QuizQuestionAnswer extends Model
 
     public function quizzesQuestion(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo('App\Models\Quizzes\QuizzesQuestion', 'quizzes_questions_id');
+        return $this->belongsTo('App\Models\Quizzes\QuizzesQuestion', 'quizzes_questions_id', 'id');
+    }
+
+    public function translates(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\Quizzes\Translates\QuizAnswerTranslates', 'quiz_question_answer_id', 'id');
     }
 }

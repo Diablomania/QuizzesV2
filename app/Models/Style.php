@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -24,6 +24,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Style extends Model
 {
+    public const NORMAL_STYLE_NAME = "normal";
+    public const DARK_STYLE_NAME = "dark";
+    public const LIGHT_STYLE_NAME = "light";
+
     protected $fillable = [
         'name', 'img_url'
     ];

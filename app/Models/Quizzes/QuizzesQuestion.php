@@ -5,7 +5,7 @@ namespace App\Models\Quizzes;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $quizzes_id
@@ -42,6 +42,11 @@ class QuizzesQuestion extends Model
 
     public function answers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\Models\Quizzes\QuizQuestionAnswer', 'quizzes_questions_id');
+        return $this->hasMany('App\Models\Quizzes\QuizQuestionAnswer', 'quizzes_questions_id', 'id');
+    }
+
+    public function translations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\Quizzes\Translates\QuizQuestionTranslates', 'quizzes_question_id');
     }
 }

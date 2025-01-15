@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $img_url
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quizzes\QuizQuestionAnswer> $answers
- * @property-read int|null $answers_count
  * @property-read \App\Models\Quizzes\QuizzesCategory $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quizzes\QuizzesQuestion> $questions
  * @property-read int|null $questions_count
@@ -38,18 +36,20 @@ class Quiz extends Model
         'category_id', 'img_url'
     ];
 
-    public static function boot()
-    {
-        parent::boot();
+    protected $appends = ['name', 'description'];
 
-        static::retrieved(function ($quiz) {
-            $systemLanguageId = Language::whereShortName(config('app.locale'))->first()->id;
-            $translation = $quiz->translations()->whereLanguageId($systemLanguageId)->first(['name', 'description']);
-            if ($translation) {
-                $quiz->name = $translation->name;
-                $quiz->description = $translation->description;
-            }
-        });
+    public function getNameAttribute()
+    {
+        $defaultLanguageId = Language::getDefaultLanguage()->id;
+        $translation = $this->translations()->whereLanguageId($defaultLanguageId)->first();
+        return $translation ? $translation->name : null;
+    }
+
+    public function getDescriptionAttribute()
+    {
+        $defaultLanguageId = Language::getDefaultLanguage()->id;
+        $translation = $this->translations()->whereLanguageId($defaultLanguageId)->first();
+        return $translation ? $translation->description : null;
     }
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -59,16 +59,11 @@ class Quiz extends Model
 
     public function questions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\Models\Quizzes\QuizzesQuestion');
-    }
-
-    public function answers(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany('App\Models\Quizzes\QuizQuestionAnswer');
+        return $this->hasMany('App\Models\Quizzes\QuizzesQuestion', 'quizzes_id', 'id');
     }
 
     public function translations(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\Models\Quizzes\Translates\QuizTranslates');
+        return $this->hasMany('App\Models\Quizzes\Translates\QuizTranslates', 'quiz_id', 'id');
     }
 }
