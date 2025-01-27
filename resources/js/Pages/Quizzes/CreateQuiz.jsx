@@ -4,11 +4,15 @@ import Input from "@/Components/Form/Input.jsx";
 import FormButton from "@/Components/Form/Button.jsx";
 import Button from "@/Components/Button.jsx";
 import Select from "@/Components/Form/Select.jsx";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {Inertia} from "@inertiajs/inertia";
+import {useTranslation} from "react-i18next";
+import LoadImage from "@/Components/Form/LoadImage.jsx";
+import Swal from "sweetalert2";
 
 export default function CreateQuiz({ categories, defaultLanguage, languages }) {
+    const [t] = useTranslation();
     const [formData, setFormData] = useState({
         language_id: defaultLanguage.id,
         category_id: "",
@@ -30,6 +34,97 @@ export default function CreateQuiz({ categories, defaultLanguage, languages }) {
             },
         ],
     });
+
+    const [isUploading, setIsUploading] = useState({
+        "isUploading": false,
+        questions: [
+            {
+                "isUploading": false,
+                answers: [
+                    {
+                        "isUploading": false,
+                    }
+                ]
+            }
+        ]
+    });
+    console.log("Is Uploading: ",isUploading);
+
+    const [files, setFiles] = useState({});
+    console.log("Files: ",files);
+
+    const fileSet = (file, questionIndex = null, answerIndex = null) => {
+        setFiles((prev) => {
+            const updatedFiles = { ...prev };
+
+            if (!updatedFiles.questions) {
+                updatedFiles.questions = [];
+            }
+
+            if (typeof questionIndex === "number" || questionIndex !== null) {
+                if (!updatedFiles.questions[questionIndex]) {
+                    updatedFiles.questions[questionIndex] = { file: null, answers: [] };
+                }
+
+                if (typeof answerIndex === "number" || answerIndex !== null) {
+                    const question = updatedFiles.questions[questionIndex];
+
+                    if (!question.answers) {
+                        question.answers = [];
+                    }
+
+                    if (!question.answers[answerIndex]) {
+                        question.answers[answerIndex] = { file: null };
+                    }
+
+                    question.answers[answerIndex].file = file;
+                } else {
+                    updatedFiles.questions[questionIndex].file = file;
+                }
+            } else {
+                updatedFiles.file = file;
+            }
+
+            return updatedFiles;
+        });
+    };
+
+
+    const isUploadingSet = (questionIndex, answerIndex = null) => {
+        setIsUploading((prev) => {
+            const updatedState = { ...prev }; // Копіюємо поточний стан
+
+            if (!updatedState.questions) {
+                updatedState.questions = [];
+            }
+
+            if (typeof questionIndex === "number") {
+                if (!updatedState.questions[questionIndex]) {
+                    updatedState.questions[questionIndex] = { isUploading: false, answers: [] };
+                }
+
+                const question = updatedState.questions[questionIndex];
+
+                if (typeof answerIndex === "number") {
+                    if (!question.answers) {
+                        question.answers = [];
+                    }
+
+                    if (!question.answers[answerIndex]) {
+                        question.answers[answerIndex] = { isUploading: false };
+                    }
+
+                    question.answers[answerIndex].isUploading = !question.answers[answerIndex].isUploading;
+                } else {
+                    question.isUploading = !question.isUploading;
+                }
+            } else {
+                console.error("Invalid questionIndex. It must be a number.");
+            }
+
+            return updatedState;
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -178,12 +273,97 @@ export default function CreateQuiz({ categories, defaultLanguage, languages }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (files.file && !formData.img_url) {
+            const formDataWithFile = new FormData();
+            formDataWithFile.append("image", files.file);
+
+            try {
+                const response = await axios.post("/upload-image", formDataWithFile, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                });
+
+                formData.img_url = response.data.imageUrl;
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                Swal.fire({
+                    title: "Error!",
+                    text: `Failed to save the quiz category image. Error: ${error.response?.data?.message || error.message}`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+                return;
+            }
+        }
+
+        for (let questionIndex = 0; questionIndex < files.questions.length; questionIndex++) {
+            const question = files.questions[questionIndex];
+
+            if (question.file && !formData.questions[questionIndex]?.img_url) {
+                const formDataWithFile = new FormData();
+                formDataWithFile.append("image", question.file);
+
+                try {
+                    const response = await axios.post("/upload-image", formDataWithFile, {
+                        headers: { "Content-Type": "multipart/form-data" },
+                    });
+
+                    formData.questions[questionIndex].img_url = response.data.imageUrl;
+                } catch (error) {
+                    console.error(`Error uploading image for question ${questionIndex}:`, error);
+                    Swal.fire({
+                        title: "Error!",
+                        text: `Failed to save the question image. Error: ${error.response?.data?.message || error.message}`,
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                    return;
+                }
+            }
+
+            if (question.answers) {
+                for (let answerIndex = 0; answerIndex < question.answers.length; answerIndex++) {
+                    const answer = question.answers[answerIndex];
+
+                    if (answer.file && !formData.questions[questionIndex]?.answers[answerIndex]?.img_url) {
+                        const formDataWithFile = new FormData();
+                        formDataWithFile.append("image", answer.file);
+
+                        try {
+                            const response = await axios.post("/upload-image", formDataWithFile, {
+                                headers: { "Content-Type": "multipart/form-data" },
+                            });
+
+                            formData.questions[questionIndex].answers[answerIndex].img_url =
+                                response.data.imageUrl;
+                        } catch (error) {
+                            console.error(
+                                `Error uploading image for answer ${answerIndex} in question ${questionIndex}:`,
+                                error
+                            );
+                            Swal.fire({
+                                title: "Error!",
+                                text: `Failed to save the answer image. Error: ${error.response?.data?.message || error.message}`,
+                                icon: "error",
+                                confirmButtonText: "OK",
+                            });
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
         try {
-            await axios.post("/quiz/save", formData).then(({data}) => {
-                Inertia.visit(route('quiz.edit', {id: data.id}));
-            });
+            const response = await axios.post("/quiz/save", formData);
+            Inertia.visit(route("quiz.edit", { id: response.data.id }));
         } catch (error) {
             console.error("Error saving quiz: ", error);
+            Swal.fire({
+                title: "Error!",
+                text: `Failed to save the quiz. Error: ${error.response?.data?.message || error.message}`,
+                icon: "error",
+                confirmButtonText: "OK",
+            });
         }
     };
 
@@ -191,11 +371,11 @@ export default function CreateQuiz({ categories, defaultLanguage, languages }) {
         <SidebarLayout>
             <Head title="Create Quiz" />
             <div className="mx-auto max-w-10xl">
-                <form className="max-w-2xl mx-auto p-4 border rounded-lg" onSubmit={handleSubmit}>
-                    <h2 className="font-bold mb-5 uppercase">Let's make a quiz in {defaultLanguage.name}</h2>
+                <form className="max-w-2xl mx-auto p-4 rounded-lg" onSubmit={handleSubmit}>
+                    <h2 className="font-bold mb-5 uppercase text-gray-200">{t("createQuiz.hey")}{defaultLanguage.name}</h2>
                     <Select
                         inputs={categories}
-                        label="quiz category"
+                        label={t("createQuiz.quizCategory")}
                         value={formData.category_id}
                         onChange={handleChange}
                         name="category_id"
@@ -203,48 +383,133 @@ export default function CreateQuiz({ categories, defaultLanguage, languages }) {
                     />
                     <Input
                         input="name"
-                        label="quiz name"
+                        label={t("createQuiz.quizName")}
                         value={formData.name}
                         onChange={handleChange}
                         name="name"
                     />
                     <Input
                         input="description"
-                        label="quiz description"
+                        label={t("createQuiz.quizDescription")}
                         value={formData.description}
                         onChange={handleChange}
                         name="description"
                     />
-                    <Input
-                        input="img_url"
-                        label="image url"
-                        value={formData.img_url}
-                        onChange={handleChange}
-                        name="img_url"
-                        required={false}
-                    />
 
-                    <Button onClick={addQuestion} className="bg-blue-500 text-white px-4 py-2 rounded" label="Add Question" />
+
+                    <div className="mb-4 flex items-center space-x-4">
+                        <span className="text-gray-400 text-sm">
+                            {t("fileForm.switchLabel")}
+                        </span>
+                        <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => setIsUploading((prev) => {
+                                setFormData((prev) => {
+                                    return {
+                                        ...prev,
+                                        img_url: ""
+                                    }
+                                });
+
+                                return {
+                                    ...prev,
+                                    "isUploading": !isUploading.isUploading
+                                }
+                            })}
+                            onKeyDown={(e) => e.key === "Enter" && setIsUploading((prev) => {
+                                setFormData((prev) => {
+                                    return {
+                                        ...prev,
+                                        img_url: ""
+                                    }
+                                });
+
+                                return {
+                                    ...prev,
+                                    "isUploading": !isUploading.isUploading
+                                }
+                            })}
+                            className={`w-8 h-4 flex items-center rounded-full px-1 cursor-pointer ${
+                                isUploading.isUploading ? "bg-indigo-600" : "bg-gray-400"
+                            }`}
+                        >
+                            <div
+                                className={`w-3 h-3 bg-white rounded-full shadow-md transform duration-300 ${
+                                    isUploading.isUploading ? "translate-x-3" : ""
+                                }`}
+                            ></div>
+                        </div>
+                    </div>
+
+                    {!isUploading.isUploading ? (
+                        <Input
+                            input="img_url"
+                            label={t("addQuizCategory.quizImageUrlLabel")}
+                            value={formData.img_url}
+                            onChange={handleChange}
+                            name="img_url"
+                            required={false}
+                        />
+                    ) : (
+                        <LoadImage fileSet={fileSet}/>
+                    )}
+
+                    <Button onClick={addQuestion} className="bg-blue-500 text-white px-4 py-2 rounded"
+                            label={t("createQuiz.addQuestionButton")}/>
 
                     {formData.questions.map((question, questionIndex) => (
-                        <div key={questionIndex} className="p-4 my-4 border rounded-lg mt-2">
+                        <div key={questionIndex} className="p-4 my-4 rounded-lg mt-2">
                             <Input
                                 input="question"
-                                label="Question:"
+                                label={t("createQuiz.questionLabel")}
                                 value={question.question}
                                 onChange={(e) => handleInputChange(e, questionIndex)}
                                 name="question"
                             />
+
+
+                            <div className="mb-4 flex items-center space-x-4">
+                                <span className="text-gray-400 text-sm">
+                                    {t("fileForm.switchLabel")}
+                                </span>
+                                <div
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={() => {
+                                        isUploadingSet(questionIndex);
+                                    }}
+                                    onKeyDown={(e) =>
+                                        e.key === "Enter" &&
+                                        isUploadingSet(questionIndex)
+                                    }
+                                    className={`w-8 h-4 flex items-center rounded-full px-1 cursor-pointer ${
+                                        isUploading?.questions?.[questionIndex]?.isUploading ? "bg-indigo-600" : "bg-gray-400"
+                                    }`}
+                                >
+                                    <div
+                                        className={`w-3 h-3 bg-white rounded-full shadow-md transform duration-300 ${
+                                            isUploading?.questions?.[questionIndex]?.isUploading ? "translate-x-3" : ""
+                                        }`}
+                                    ></div>
+                                </div>
+                            </div>
+
+                            {!isUploading.questions[questionIndex]?.isUploading ? (
                             <Input
                                 input="img_url"
-                                label="Question image url"
+                                label={t("createQuiz.questionImageLabel")}
                                 value={question.img_url}
                                 onChange={(e) => handleInputChange(e, questionIndex)}
                                 name="img_url"
                                 required={false}
                             />
-                            <label>
-                                Is Multi:
+                            ) : (
+                                <LoadImage fileSet={fileSet} questionIndex={questionIndex}/>
+                            )}
+
+                            <label className="text-gray-400">
+                                {t("createQuiz.isMulti")}
                                 <input
                                     type="checkbox"
                                     name="is_multi_answers"
@@ -262,28 +527,59 @@ export default function CreateQuiz({ categories, defaultLanguage, languages }) {
                                     }
                                 />
                             </label>
-                            <br />
+                            <br/>
 
-                            <Button onClick={() => addAnswer(questionIndex)} label="Add Answer" />
+                            <Button onClick={() => addAnswer(questionIndex)} label={t("createQuiz.addAnswerButton")}/>
                             {question.answers.map((answer, answerIndex) => (
                                 <div key={answerIndex} className="mt-2">
                                     <Input
                                         input="answer"
-                                        label="Answer:"
+                                        label={t("createQuiz.answerLabel")}
                                         value={answer.answer}
                                         onChange={(e) => handleInputChange(e, questionIndex, answerIndex)}
                                         name="answer"
                                     />
-                                    <Input
-                                        input="img_url"
-                                        label="Answer image url"
-                                        value={answer.img_url}
-                                        onChange={(e) => handleInputChange(e, questionIndex, answerIndex)}
-                                        name="img_url"
-                                        required={false}
-                                    />
-                                    <label>
-                                        Is True:
+
+
+
+                                    <div className="mb-4 flex items-center space-x-4">
+                                        <span className="text-gray-400 text-sm">
+                                            {t("fileForm.switchLabel")}
+                                        </span>
+                                        <div
+                                            role="button"
+                                            tabIndex={0}
+                                            onClick={() => {
+                                                isUploadingSet(questionIndex, answerIndex);
+                                            }}
+                                            onKeyDown={(e) => e.key === "Enter" && isUploadingSet(questionIndex, answerIndex)}
+                                            className={`w-8 h-4 flex items-center rounded-full px-1 cursor-pointer ${
+                                                isUploading.questions[questionIndex]?.answers[answerIndex]?.isUploading ? "bg-indigo-600" : "bg-gray-400"
+                                            }`}
+                                        >
+                                            <div
+                                                className={`w-3 h-3 bg-white rounded-full shadow-md transform duration-300 ${
+                                                    isUploading.questions[questionIndex]?.answers[answerIndex]?.isUploading ? "translate-x-3" : ""
+                                                }`}
+                                            ></div>
+                                        </div>
+                                    </div>
+
+                                    {!isUploading.questions[questionIndex]?.answers[answerIndex]?.isUploading ? (
+                                        <Input
+                                            input="img_url"
+                                            label={t("createQuiz.answerImageLabel")}
+                                            value={answer.img_url}
+                                            onChange={(e) => handleInputChange(e, questionIndex, answerIndex)}
+                                            name="img_url"
+                                            required={false}
+                                        />
+                                    ) : (
+                                        <LoadImage fileSet={fileSet} questionIndex={questionIndex} answerIndex={answerIndex}/>
+                                    )}
+
+                                    <label className="text-gray-400">
+                                        {t("createQuiz.isTrue")}
                                         <input
                                             type="checkbox"
                                             name="is_true"
@@ -296,7 +592,7 @@ export default function CreateQuiz({ categories, defaultLanguage, languages }) {
                         </div>
                     ))}
 
-                    <FormButton label="Save Quiz" />
+                    <FormButton label={t("createQuiz.saveQuizButton")}/>
                 </form>
             </div>
         </SidebarLayout>

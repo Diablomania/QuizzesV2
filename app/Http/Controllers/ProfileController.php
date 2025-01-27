@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Quizzes\Quiz;
+use App\Models\Quizzes\QuizResult;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -59,5 +61,33 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function getDashboard(QuizResult $quizResults): Response
+    {
+        $user = Auth::user();
+        $quizResults = $quizResults->whereUserId($user->id)->whereIsBest(true)->with('quizzes')->orderBy('score', 'desc')->get();
+        $totalBestScore = $quizResults->sum('score');
+
+        return Inertia::render('Dashboard', [
+            'quizResults' => $quizResults->toArray(),
+            'bestScoreResult' => $quizResults->first(),
+            'totalBestScore' => $totalBestScore,
+        ]);
+    }
+
+    public function getLeaderboard(QuizResult $quizResults): Response
+    {
+        $leaderboard = $quizResults->select('user_id')
+            ->selectRaw('SUM(score) as total_score')
+            ->whereIsBest(true)
+            ->groupBy('user_id')
+            ->with('user')
+            ->orderByDesc('total_score')
+            ->get();
+
+        return Inertia::render('Leaderboard', [
+            'leaderboard' => $leaderboard->toArray(),
+        ]);
     }
 }

@@ -7,8 +7,11 @@ import Select from "@/Components/Form/Select.jsx";
 import { useState } from "react";
 import axios from "axios";
 import CloseButton from "@/Components/CloseButton.jsx";
+import Swal from "sweetalert2";
+import {useTranslation} from "react-i18next";
 
 export default function EditQuiz({ quiz, categories, defaultLanguage, languages }) {
+    const [t] = useTranslation();
     const [formData, setFormData] = useState(quiz);
 
     const handleChange = (e) => {
@@ -30,39 +33,59 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
         e.preventDefault();
 
         if (answerId) {
-            try {
-                await axios.delete("/quiz/answer/"+answerId, formData).then(({data}) => {
-                    window.location.reload();
-                });
-            } catch (error) {
-                console.error("Error deleting answer: ", error);
+            Swal.fire({
+                title: t("editQuiz.deleteAnswerModal.title"),
+                text: t("editQuiz.deleteAnswerModal.text"),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: t("editQuiz.deleteAnswerModal.confirmButtonText"),
+                cancelButtonText: t("editQuiz.deleteAnswerModal.cancelButtonText"),
+            }).then(async (result) => {
+                if (result.isConfirmed) {
 
-                setFormData((prev) => {
-                    const updatedQuestions = prev.questions.map((question, qIdx) => {
-                        if (qIdx === questionIndex) {
-                            const updatedAnswers = question.answers.map((answer, aIdx) => {
-                                if (aIdx === answerIndex) {
+                    try {
+                        await axios.delete("/quiz/answer/"+answerId, formData).then(() => {
+                            Swal.fire({
+                                title: t("editQuiz.deleteAnswerModal.answer.title"),
+                                text: t("editQuiz.deleteAnswerModal.answer.text"),
+                                icon: 'success',
+                                confirmButtonText: t("editQuiz.deleteAnswerModal.answer.confirmButtonText"),
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        });
+                    } catch (error) {
+                        console.error("Error deleting answer: ", error);
+
+                        setFormData((prev) => {
+                            const updatedQuestions = prev.questions.map((question, qIdx) => {
+                                if (qIdx === questionIndex) {
+                                    const updatedAnswers = question.answers.map((answer, aIdx) => {
+                                        if (aIdx === answerIndex) {
+                                            return {
+                                                ...answer,
+                                                error: error.response.data.error,
+                                            }
+                                        }
+                                    });
+
                                     return {
-                                        ...answer,
-                                        error: error.response.data.error,
-                                    }
+                                        ...question,
+                                        answers: updatedAnswers,
+                                    };
                                 }
+                                return question;
                             });
 
                             return {
-                                ...question,
-                                answers: updatedAnswers,
+                                ...prev,
+                                questions: updatedQuestions,
                             };
-                        }
-                        return question;
-                    });
-
-                    return {
-                        ...prev,
-                        questions: updatedQuestions,
-                    };
-                });
-            }
+                        });
+                    }
+                }});
         } else {
             setFormData((prev) => {
                 const updatedQuestions = prev.questions.map((question, qIdx) => {
@@ -88,31 +111,50 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
         e.preventDefault();
 
         if (questionId) {
-            try {
-                await axios.delete("/quiz/question/"+questionId, formData).then(({data}) => {
-                    window.location.reload();
-                });
-            } catch (error) {
-                console.error("Error deleting answer: ", error);
+            Swal.fire({
+                title: t("editQuiz.deleteQuestionModal.title"),
+                text: t("editQuiz.deleteQuestionModal.text"),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: t("editQuiz.deleteQuestionModal.confirmButtonText"),
+                cancelButtonText: t("editQuiz.deleteQuestionModal.cancelButtonText"),
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await axios.delete("/quiz/question/"+questionId, formData).then(() => {
+                            Swal.fire({
+                                title: t("editQuiz.deleteQuestionModal.answer.title"),
+                                text: t("editQuiz.deleteQuestionModal.answer.text"),
+                                icon: 'success',
+                                confirmButtonText: t("editQuiz.deleteQuestionModal.answer.confirmButtonText"),
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        });
+                    } catch (error) {
+                        console.error("Error deleting question: ", error);
 
-                setFormData((prev) => {
-                    const updatedQuestions = prev.questions.map((question, qIdx) => {
-                        if (qIdx === questionIndex) {
+                        setFormData((prev) => {
+                            const updatedQuestions = prev.questions.map((question, qIdx) => {
+                                if (qIdx === questionIndex) {
+
+                                    return {
+                                        ...question,
+                                        error: error.response.data.error,
+                                    };
+                                }
+                                return question;
+                            });
 
                             return {
-                                ...question,
-                                error: error.response.data.error,
+                                ...prev,
+                                questions: updatedQuestions,
                             };
-                        }
-                        return question;
-                    });
-
-                    return {
-                        ...prev,
-                        questions: updatedQuestions,
-                    };
-                });
-            }
+                        });
+                    }
+                }});
         } else {
             setFormData((prev) => {
                 const updatedQuestions = prev.questions.filter((_, qIdx) => qIdx !== questionIndex);
@@ -351,11 +393,9 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Submit", formData);
 
         try {
             await axios.put("/quiz/update", formData).then(({data}) => {
-                console.log("Answer", data);
                 window.location.reload();
             });
         } catch (error) {
@@ -369,18 +409,18 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
 
     const getLanguageNameById = (languageId) => {
         const language = languages.find(lang => lang.id === parseInt(languageId));
-        return language ? language.name : "Unknown Language";
+        return language ? language.name : t("editQuiz.unknownLanguage");
     };
 
     return (
         <SidebarLayout>
-            <Head title="Create Quiz" />
+            <Head title={t("editQuiz.head")} />
             <div className="mx-auto max-w-10xl">
-                <form className="max-w-2xl mx-auto p-4 border rounded-lg" onSubmit={handleSubmit}>
-                    <h2 className="font-bold mb-5 uppercase">Let's edit a quiz</h2>
+                <form className="max-w-2xl mx-auto p-4 rounded-lg" onSubmit={handleSubmit}>
+                    <h2 className="font-bold mb-5 uppercase text-gray-200">{t("editQuiz.title")}</h2>
                     {formData.error && Object.keys(formData.error).length > 0 && (
                         <div
-                            className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                            className="p-4 mb-4 text-sm rounded-lg bg-gray-800 text-red-400"
                             role="alert"
                         >
                             {Object.entries(formData.error).map(([key, message]) => (
@@ -394,7 +434,7 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                     )}
                     <Select
                         inputs={categories}
-                        label="quiz category"
+                        label={t("editQuiz.quizCategoryLabel")}
                         value={formData.category_id}
                         onChange={handleChange}
                         name="category_id"
@@ -402,7 +442,7 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                     />
                     <Input
                         input="img_url"
-                        label="image url"
+                        label={t("editQuiz.quizImageUrlLabel")}
                         value={formData.img_url}
                         onChange={handleChange}
                         name="img_url"
@@ -414,14 +454,14 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                             <>
                                 <Input
                                     input="name"
-                                    label={"quiz name " + getLanguageNameById(quizTrans.language_id)}
+                                    label={t("editQuiz.quizName") + getLanguageNameById(quizTrans.language_id)}
                                     value={quizTrans.name}
                                     onChange={(e) => handleQuizInputChange(e, quizIndex)}
                                     name="name"
                                 />
                                 <Input
                                     input="description"
-                                    label={"quiz description " + getLanguageNameById(quizTrans.language_id)}
+                                    label={t("editQuiz.quizDescription") + getLanguageNameById(quizTrans.language_id)}
                                     value={quizTrans.description}
                                     onChange={(e) => handleQuizInputChange(e, quizIndex)}
                                     name="description"
@@ -430,24 +470,24 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                         )
                     })}
 
-                    <Button onClick={addQuestion} className="bg-blue-500 text-white px-4 py-2 rounded" label="Add Question" />
+                    <Button onClick={addQuestion} className="bg-blue-500 text-white px-4 py-2 rounded" label={t("editQuiz.addQuestionButton")} />
 
                     {formData.questions.map((question, questionIndex) => {
                         const questionTranslate = question.translations.find(
                             (translation) => translation.language_id === parseInt(defaultLanguage.id));
 
                         return (
-                            <div key={questionIndex} className="p-4 my-4 border rounded-lg mt-2">
+                            <div key={questionIndex} className="p-4 my-4 rounded-lg mt-2">
                                 <div className="flex justify-between">
-                                    <h4 className="font-bold">
+                                    <h4 className="font-bold text-gray-200">
                                         {questionTranslate ? (
-                                            "Question " + (questionIndex + 1) + ": " + questionTranslate.question
+                                            t("editQuiz.questionLabel") + " " + (questionIndex + 1) + ": " + questionTranslate.question
 
                                         ) : (
-                                            "Question " + (questionIndex + 1) + ": No translation available"
+                                            t("editQuiz.questionLabel") + (questionIndex + 1) + t("editQuiz.questionNoTranslationLabel")
                                         )}
                                     </h4>
-                                    <CloseButton label="Delete"  onClick={(e) => deleteQuestion(e, questionIndex, question.id ?? null)} />
+                                    <CloseButton label={t("editQuiz.deleteButton")} onClick={(e) => deleteQuestion(e, questionIndex, question.id ?? null)} />
                                 </div>
                                 {question.error && (<div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
                                     <span className="font-medium">{question.error}</span>
@@ -458,7 +498,7 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                                         <>
                                             <Input
                                                 input="question"
-                                                label={"Question " + getLanguageNameById(questionTrans.language_id)}
+                                                label={t("editQuiz.questionLabel") + " " + getLanguageNameById(questionTrans.language_id)}
                                                 value={questionTrans.question}
                                                 onChange={(e) => handleQuestionTranslateInputChange(e, questionIndex, questionTranslateIndex)}
                                                 name="question"
@@ -469,14 +509,14 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
 
                                 <Input
                                     input="img_url"
-                                    label="Question image url"
+                                    label={t("editQuiz.questionImageUrlLabel")}
                                     value={question.img_url}
                                     onChange={(e) => handleInputChange(e, questionIndex)}
                                     name="img_url"
                                     required={false}
                                 />
-                                <label>
-                                    Is Multi:
+                                <label className="text-gray-400">
+                                    {t("editQuiz.isMulti")}
                                     <input
                                         type="checkbox"
                                         name="is_multi_answers"
@@ -496,15 +536,15 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                                 </label>
                                 <br/>
 
-                                <Button onClick={() => addAnswer(questionIndex)} label="Add Answer"/>
+                                <Button onClick={() => addAnswer(questionIndex)} label={t("editQuiz.addAnswerLabel")}/>
                                 {question.answers.map((answer, answerIndex) => (
-                                    <div key={answerIndex} className="p-4 my-4 border rounded-lg mt-2">
+                                    <div key={answerIndex} className="p-4 my-4 rounded-lg mt-2">
                                         <div className="flex justify-between">
-                                            <h4 className="font-bold">Answer {(answerIndex + 1)}</h4>
-                                            <CloseButton label="Delete"
+                                            <h4 className="font-bold text-gray-200">{t("editQuiz.answerLabel") + " " + (answerIndex + 1)}</h4>
+                                            <CloseButton label={t("editQuiz.deleteButton")}
                                                          onClick={(e) => deleteAnswer(e, questionIndex, answerIndex, answer.id ?? null)}/>
                                         </div>
-                                        {answer.error && (<div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                        {answer.error && (<div className="p-4 mb-4 text-sm rounded-lg bg-gray-800 text-red-400" role="alert">
                                             <span className="font-medium">{answer.error}</span>
                                         </div>)}
 
@@ -513,7 +553,7 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                                                 <>
                                                     <Input
                                                         input="answer"
-                                                        label={"Answer " + getLanguageNameById(answerTrans.language_id)}
+                                                        label={t("editQuiz.answerLabel") + " " + getLanguageNameById(answerTrans.language_id)}
                                                         value={answerTrans.answer}
                                                         onChange={(e) => handleInputChange(e, questionIndex, answerIndex, answerTranslateIndex)}
                                                         name="answer"
@@ -523,14 +563,14 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                                         })}
                                         <Input
                                             input="img_url"
-                                            label="Answer image url"
+                                            label={t("editQuiz.answerImageUrlLabel")}
                                             value={answer.img_url}
                                             onChange={(e) => handleInputChange(e, questionIndex, answerIndex)}
                                             name="img_url"
                                             required={false}
                                         />
-                                        <label>
-                                            Is True:
+                                        <label className="text-gray-400">
+                                            {t("editQuiz.isTrue")}
                                             <input
                                                 type="checkbox"
                                                 name="is_true"
@@ -544,7 +584,7 @@ export default function EditQuiz({ quiz, categories, defaultLanguage, languages 
                         )
                     })}
 
-                    <FormButton label="Save Quiz"/>
+                    <FormButton label={t("editQuiz.saveQuizButton")} />
                 </form>
             </div>
         </SidebarLayout>

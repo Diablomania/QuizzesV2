@@ -1,0 +1,282 @@
+{
+    "name": "Quizze",
+    "mainMenu": {
+        "quizzes": {
+            "name": "Quizze",
+            "categories": "Quizkategorien",
+            "leaderboard": "Bestenliste"
+        },
+        "admin": {
+            "createNewQuiz": "Neues Quiz erstellen",
+            "name": "Verwaltung",
+            "add": "Quizkategorie hinzufügen",
+            "editQuizCategories": "Quizkategorien bearbeiten"
+        },
+        "user": {
+            "name": "Benutzer",
+            "edit": "Bearbeiten",
+            "dashboard": "Dashboard"
+        },
+        "logOut": {
+            "name": "Abmelden"
+        }
+    },
+    "home": {
+        "head": "Willkommen",
+        "login": "Einloggen",
+        "register": "Anmeldung"
+    },
+    "login": {
+        "head": "Einloggen",
+        "login": "Einloggen",
+        "register": "Anmeldung",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "remember": "Erinnere dich an mich",
+        "forgot": "Passwort vergessen?",
+        "noAccount": "Sie haben noch kein Konto?"
+    },
+    "forgot": {
+        "head": "Passwort vergessen",
+        "remember": "Passwort vergessen?",
+        "resetButton": "Zurücksetzen des Passworts per E-Mail",
+        "description1": "Passwort vergessen?",
+        "description2": "Kein Problem!",
+        "description3": "Teilen Sie uns einfach Ihre E-Mail-Adresse mit und wir schicken Ihnen per E-Mail einen Link zum Zurücksetzen des Passworts, mit dem Sie ein neues Passwort auswählen können."
+    },
+    "confirmPassword": {
+        "head": "Passwort bestätigen",
+        "description": "Dies ist ein sicherer Bereich der Anwendung. Bitte bestätigen Sie Ihr Passwort, bevor Sie fortfahren.",
+        "password": "Passwort",
+        "confirmButton": "Bestätigen"
+    },
+    "resetPassword": {
+        "head": "Passwort zurücksetzen",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "confirmPassword": "Passwort bestätigen",
+        "resetButton": "Passwort bestätigen"
+    },
+    "verifyEmail": {
+        "head": "E-Mail-Verifizierung",
+        "send": "Ein neuer Verifizierungslink wurde an die E-Mail-Adresse gesendet, die Sie bei der Registrierung angegeben haben.",
+        "resendButton": "Verifizierungs-E-Mail erneut senden",
+        "description1": "Vielen Dank für Ihre Anmeldung!",
+        "description2": "Bevor Sie beginnen, könnten Sie Ihre E-Mail-Adresse verifizieren, indem Sie auf den Link klicken, den wir Ihnen gerade per E-Mail geschickt haben?",
+        "description3": "Wenn Sie die E-Mail nicht erhalten haben, senden wir Ihnen gerne eine weitere."
+    },
+    "quiz": {
+        "noTranslation": "Keine Übersetzungen für dieses Quiz",
+        "addTranslateButton": "Übersetzungen hinzufügen",
+        "addNewQuizButton": "Neues Quiz hinzufügen",
+        "editQuizButton": "Quiz bearbeiten",
+        "startQuizButton": "Quiz starten",
+        "deleteQuizButton": "Quiz löschen",
+        "nextButton": "Nächste Frage",
+        "complete": "Quiz abgeschlossen",
+        "score": "Dein Ergebnis: ",
+        "again": "Erneut starten",
+        "bestResult": "Das ist dein bestes Ergebnis für dieses Quiz",
+        "maxResult": "Das ist die maximale Punktzahl für dieses Quiz",
+        "modal": {
+            "title": "Bist du sicher?",
+            "text": "Möchtest du dieses Quiz wirklich löschen?",
+            "icon": "warning",
+            "confirmButtonText": "Ja, löschen!",
+            "cancelButtonText": "Abbrechen",
+            "confirmModal": {
+                "title": "Gelöscht!",
+                "text": "Das Quiz wurde gelöscht.",
+                "icon": "success",
+                "confirmButtonText": "OK"
+            },
+            "error": {
+                "title": "Fehler",
+                "text": "Das Quiz konnte nicht gelöscht werden. Bitte versuche es erneut.",
+                "confirmButtonText": "OK"
+            }
+        },
+        "answerModal": {
+            "title": "Antwort auswählen!",
+            "text": "Bitte wähle mindestens eine Antwort aus, bevor du fortfährst!",
+            "confirmButtonText": "OK"
+        }
+    },
+    "createQuiz": {
+        "hey": "Lassen Sie uns ein Quiz erstellen in ",
+        "quizCategory": "Quizkategorie",
+        "quizName": "Quizname",
+        "quizDescription": "Quizbeschreibung",
+        "quizImgUrl": "Bild-URL",
+        "addQuestionButton": "Frage hinzufügen",
+        "questionLabel": "Frage:",
+        "questionImageLabel": "Bild-URL der Frage",
+        "isMulti": "Mehrfachauswahl:",
+        "addAnswerButton": "Antwort hinzufügen",
+        "answerLabel": "Antwort:",
+        "answerImageLabel": "Bild-URL der Antwort",
+        "isTrue": "Ist korrekt:",
+        "saveQuizButton": "Quiz speichern"
+    },
+    "editCategories": {
+        "head": "Quizkategorien bearbeiten",
+        "addNewCategoryButton": "Neue Kategorie hinzufügen",
+        "tableId": "ID",
+        "tableName": "Name",
+        "tableDescription": "Beschreibung",
+        "tableActions": "Aktionen",
+        "editButton": "bearbeiten",
+        "deleteButton": "löschen",
+        "modal": {
+            "title": "Sind Sie sicher?",
+            "text": "Möchten Sie diese Kategorie wirklich löschen?",
+            "icon": "Warnung",
+            "confirmButtonText": "Ja, löschen!",
+            "cancelButtonText": "Abbrechen",
+            "confirmModal": {
+                "title": "Gelöscht!",
+                "text": "Die Kategorie wurde gelöscht.",
+                "icon": "Erfolg",
+                "confirmButtonText": "OK"
+            }
+        }
+    },
+    "addQuizCategory": {
+        "head": "Quiz erstellen",
+        "title": "Lass uns eine Quiz-Kategorie in ",
+        "quizNameLabel": "Quiz-Name",
+        "quizDescriptionLabel": "Quiz-Beschreibung",
+        "quizImageUrlLabel": "Bild-URL",
+        "uploadFile": "Ein Bild hochladen",
+        "useUrl": "Eine externe URL verwenden",
+        "uploadImageLabel": "Wählen Sie ein Bild zum Hochladen aus",
+        "saveQuizCategoryButton": "Quiz-Kategorie speichern"
+    },
+    "editUser": {
+        "head": "Profil",
+        "updateProfileInformationForm": {
+            "header": "Profilinformationen",
+            "description": "Aktualisieren Sie die Profilinformationen und die E-Mail-Adresse Ihres Kontos.",
+            "nameLabel": "Name",
+            "emailLabel": "E-Mail",
+            "saveButton": "Speichern",
+            "reSendLink": "Klicken Sie hier, um die Bestätigungs-E-Mail erneut zu senden.",
+            "newVerificationLink": "Ein neuer Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.",
+            "saved": "Gespeichert."
+        },
+        "updatePasswordForm": {
+            "header": "Passwort aktualisieren",
+            "description": "Stellen Sie sicher, dass Ihr Konto ein langes, zufälliges Passwort verwendet, um sicher zu bleiben.",
+            "passwordLabel": "Aktuelles Passwort",
+            "newPassword": "Neues Passwort",
+            "confirmPasswordLabel": "Passwort bestätigen",
+            "saveButton": "Speichern",
+            "saved": "Gespeichert."
+        },
+        "deleteUserForm": {
+            "header": "Konto löschen",
+            "description": "Nach dem Löschen Ihres Kontos werden alle zugehörigen Ressourcen und Daten dauerhaft gelöscht. Laden Sie vor dem Löschen Ihres Kontos alle Daten herunter, die Sie behalten möchten.",
+            "deleteButton": "Konto löschen",
+            "modal": {
+                "header": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
+                "description": "Nach dem Löschen Ihres Kontos werden alle zugehörigen Ressourcen und Daten dauerhaft gelöscht. Bitte geben Sie Ihr Passwort ein, um die dauerhafte Löschung Ihres Kontos zu bestätigen.",
+                "deleteButton": "Konto löschen",
+                "cancelButton": "Abbrechen",
+                "password": "Passwort"
+            }
+        }
+    },
+    "dashboard": {
+        "head": "Dashboard",
+        "totalScore": "Gesamtpunktzahl: ",
+        "totalScoreDescription": "Ihre Gesamtpunktzahl (richtige Antworten) in allen Quizzen!",
+        "bestQuiz": "Bestes Quiz: ",
+        "bestQuizDescription": "Ihr bestes Quiz ist: ",
+        "tableId": "ID",
+        "tableName": "Name",
+        "tableDescription": "Beschreibung",
+        "tableBestScore": "Beste Punktzahl",
+        "noQuizResults": "Sie haben noch keine Quiz abgeschlossen."
+    },
+    "leaderboard": {
+        "head": "Rangliste",
+        "totalScore": "Gesamtpunktzahl: ",
+        "tableId": "ID",
+        "tableName": "Name",
+        "noQuizResults": "Sie haben noch kein Quiz abgeschlossen."
+    },
+    "addQuizTranslation": {
+        "head": "Quiz Übersetzungen",
+        "translationForQuizId": "Übersetzungen für Quiz-ID: ",
+        "quizName": "Quizname: ",
+        "quizDescription": "Quizbeschreibung: ",
+        "submitButton": "Absenden",
+        "unknownLanguage": "Unbekannte Sprache",
+        "chooseTranslatedLanguage": "Wählen Sie die übersetzte Sprache",
+        "quizNameTranslate": "Quizname übersetzt in ",
+        "quizDescriptionTranslate": "Quizbeschreibung übersetzt in ",
+        "questionLabel": "Frage ",
+        "questionNoTranslationLabel": ": Keine Übersetzung verfügbar",
+        "quizQuestionTranslateIn": "Quizfrage übersetzt in ",
+        "answerLabel": "Antwort ",
+        "quizAnswerTranslateIn": "Quizantwort übersetzt in "
+    },
+    "editQuiz": {
+        "head": "Quiz bearbeiten",
+        "title": "Lassen Sie uns ein Quiz bearbeiten",
+        "quizCategoryLabel": "Quizkategorie",
+        "quizImageUrlLabel": "Bild-URL",
+        "quizName": "Quizname",
+        "quizDescription": "Quizbeschreibung",
+        "addQuestionButton": "Frage hinzufügen",
+        "questionLabel": "Frage",
+        "questionNoTranslationLabel": ": Keine Übersetzung verfügbar",
+        "questionImageUrlLabel": "Fragebild-URL",
+        "addAnswerLabel": "Antwort hinzufügen",
+        "deleteButton": "Löschen",
+        "answerLabel": "Antwort",
+        "answerImageUrlLabel": "Antwortbild-URL",
+        "isMulti": "Mehrfachauswahl:",
+        "isTrue": "Richtig:",
+        "unknownLanguage": "Unbekannte Sprache",
+        "saveQuizButton": "Quiz speichern",
+        "deleteQuestionModal": {
+            "title": "Sind Sie sicher?",
+            "text": "Möchten Sie diese Frage wirklich löschen?",
+            "icon": "Warnung",
+            "confirmButtonText": "Ja, löschen!",
+            "cancelButtonText": "Abbrechen",
+            "answer": {
+                "title": "Gelöscht!",
+                "text": "Die Frage wurde gelöscht.",
+                "icon": "Erfolg",
+                "confirmButtonText": "OK"
+            }
+        },
+        "deleteAnswerModal": {
+            "title": "Sind Sie sicher?",
+            "text": "Möchten Sie diese Antwort wirklich löschen?",
+            "icon": "Warnung",
+            "confirmButtonText": "Ja, löschen!",
+            "cancelButtonText": "Abbrechen",
+            "answer": {
+                "title": "Gelöscht!",
+                "text": "Die Antwort wurde gelöscht.",
+                "icon": "Erfolg",
+                "confirmButtonText": "OK"
+            }
+        }
+    },
+    "dropDownMenu": {
+        "profile": "Profil",
+        "logOut": "Abmelden"
+    },
+    "fileForm": {
+        "switchLabel": "Externe URL / Lokale Datei",
+        "rules": "PNG, JPG und andere Formate, kleiner als 2MB",
+        "description": "Ziehe die Datei hierher oder",
+        "button": "Datei auswählen",
+        "preview": "Vorschau:",
+        "imgAlt": "Vorschau"
+    }
+}

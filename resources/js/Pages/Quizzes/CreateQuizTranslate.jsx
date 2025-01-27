@@ -5,8 +5,10 @@ import Input from "@/Components/Form/Input.jsx";
 import Select from "@/Components/Form/Select.jsx";
 import {useState} from "react";
 import Button from "@/Components/Form/Button.jsx";
+import {useTranslation} from "react-i18next";
 
 export default function CreateQuizTranslate({ quiz, defaultQuizTranslate, languages }) {
+    const [t] = useTranslation();
     const [formData, setFormData] = useState(quiz);
 
     const handleChange = (e) => {
@@ -95,12 +97,9 @@ export default function CreateQuizTranslate({ quiz, defaultQuizTranslate, langua
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
 
         try {
-            await axios.post("/quiz/save-translate", formData).then(({data}) => {
-                console.log("Answer", data);
-            });
+            await axios.post("/quiz/save-translate", formData);
         } catch (error) {
             console.error("Error saving quiz: ", error);
         }
@@ -108,35 +107,35 @@ export default function CreateQuizTranslate({ quiz, defaultQuizTranslate, langua
 
     const getLanguageNameById = (languageId) => {
         const language = languages.find(lang => lang.id === parseInt(languageId));
-        return language ? language.name : "Unknown Language";
+        return language ? language.name : t("addQuizTranslation.unknownLanguage");
     };
 
     return (
         <SidebarLayout>
-            <Head title="Quiz Translates" />
+            <Head title={t("addQuizTranslation.head")} />
             <div className="mx-auto max-w-10xl">
-                <form className="max-w-2xl mx-auto p-4 border rounded-lg" onSubmit={handleSubmit}>
-                    <h2 className="font-bold mb-5 uppercase">Translations For Quiz ID: {quiz.id}</h2>
+                <form className="max-w-2xl mx-auto p-4 rounded-lg" onSubmit={handleSubmit}>
+                    <h2 className="font-bold mb-5 uppercase text-gray-200">{t("addQuizTranslation.translationForQuizId") + quiz.id}</h2>
                     <Select
                         inputs={languages}
-                        label="choose translated language"
+                        label={t("addQuizTranslation.chooseTranslatedLanguage")}
                         value={formData.language_id}
                         onChange={(e) => handleLanguageValue(e.target.value)}
                         name="language_id"
                         setDefaultValue={(value) => handleLanguageValue(value)}
                     />
-                    Quiz name: {defaultQuizTranslate.name}<br/>
+                    <p className="text-gray-200">{t("addQuizTranslation.quizName") + defaultQuizTranslate.name}</p>
                     <Input
                         input="name"
-                        label={"quiz name translate in " + getLanguageNameById(formData.language_id)}
+                        label={t("addQuizTranslation.quizNameTranslate") + getLanguageNameById(formData.language_id)}
                         value={formData.name}
                         onChange={handleChange}
                         name="name"
                     />
-                    Quiz descriptions: {defaultQuizTranslate.description}<br/>
+                    <p className="text-gray-200">{t("addQuizTranslation.quizDescription") + defaultQuizTranslate.description}</p>
                     <Input
                         input="description"
-                        label={"quiz description translate in " + getLanguageNameById(formData.language_id)}
+                        label={t("addQuizTranslation.quizDescriptionTranslate") + getLanguageNameById(formData.language_id)}
                         value={formData.description}
                         onChange={handleChange}
                         name="description"
@@ -146,17 +145,19 @@ export default function CreateQuizTranslate({ quiz, defaultQuizTranslate, langua
                             (translation) => translation.language_id === parseInt(defaultQuizTranslate.language_id));
 
                         return (
-                            <div key={questionIndex} className="p-4 my-4 border rounded-lg">
-                                {questionTranslate ? (
-                                    "Question " + (questionIndex + 1) + ": " + questionTranslate.question
+                            <div key={questionIndex} className="p-4 my-4 rounded-lg">
+                                <p className="text-gray-200">
+                                    {questionTranslate ? (
+                                        t("addQuizTranslation.questionLabel") + (questionIndex + 1) + ": " + questionTranslate.question
 
-                                ) : (
-                                    "Question " + (questionIndex + 1) + ": No translation available"
-                                )}
+                                    ) : (
+                                        t("addQuizTranslation.questionLabel") + (questionIndex + 1) + t("addQuizTranslation.questionNoTranslationLabel")
+                                    )}
+                                </p>
 
                                 <Input
                                     input="question"
-                                    label={"quiz question translate in " + getLanguageNameById(formData.language_id)}
+                                    label={t("addQuizTranslation.quizQuestionTranslateIn") + getLanguageNameById(formData.language_id)}
                                     value={question.question}
                                     onChange={(e) => handleInputChange(e, questionIndex)}
                                     name="question"
@@ -167,26 +168,28 @@ export default function CreateQuizTranslate({ quiz, defaultQuizTranslate, langua
 
                                     return (
                                         <div key={answerIndex} className="mt-2">
-                                            {answerTranslate ? (
-                                                "Answer " + (answerIndex + 1) + ": " + answerTranslate.answer
-
-                                            ) : (
-                                                "Answer " + (answerIndex + 1) + ": No translation available"
-                                            )}
+                                            <p className="text-gray-200">
+                                                {answerTranslate ? (
+                                                    t("addQuizTranslation.answerLabel") + (answerIndex + 1) + ": " + answerTranslate.answer
+                                                ) : (
+                                                    t("addQuizTranslation.answerLabel") + (answerIndex + 1) + t("addQuizTranslation.questionNoTranslationLabel")
+                                                )}
+                                            </p>
 
                                             <Input
                                                 input="answer"
-                                                label={"answer translate in " + getLanguageNameById(formData.language_id)}
+                                                label={t("addQuizTranslation.quizAnswerTranslateIn") + getLanguageNameById(formData.language_id)}
                                                 value={answer.answer}
                                                 onChange={(e) => handleInputChange(e, questionIndex, answerIndex)}
                                                 name="answer"
                                             />
                                         </div>
-                                )})}
+                                )
+                                })}
                             </div>
 
-                        )})}
-                    <Button />
+                    )})}
+                    <Button label={t("addQuizTranslation.submitButton")} />
                 </form>
             </div>
         </SidebarLayout>

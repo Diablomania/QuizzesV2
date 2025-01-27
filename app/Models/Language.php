@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *
@@ -33,6 +34,21 @@ class Language extends Model
     protected $fillable = [
         'name', 'short_name', 'img_url', 'is_default'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($language) {
+            if ($language->img_url) {
+                $relativePath = str_replace('/storage/', '', $language->img_url);
+
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+        });
+    }
 
     public static function getDefaultLanguage()
     {

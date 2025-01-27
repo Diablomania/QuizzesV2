@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Quiz;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Quizzes\Quiz\CreateCategoryRequest;
 use App\Http\Requests\Quizzes\Quiz\CreateRequest;
 use App\Http\Requests\Quizzes\Quiz\CreateTranslateRequest;
+use App\Http\Requests\Quizzes\Quiz\SubmitRequest;
+use App\Http\Requests\Quizzes\Quiz\UpdateCategoryRequest;
 use App\Http\Requests\Quizzes\Quiz\UpdateRequest;
 use App\Models\Language;
 use App\Models\Quizzes\Quiz;
 use App\Models\Quizzes\QuizQuestionAnswer;
+use App\Models\Quizzes\QuizResult;
 use App\Models\Quizzes\QuizzesCategory;
 use App\Models\Quizzes\QuizzesQuestion;
 use App\Models\Quizzes\Translates\QuizAnswerTranslates;
+use App\Models\Quizzes\Translates\QuizCategoryTranslates;
 use App\Models\Quizzes\Translates\QuizQuestionTranslates;
 use App\Models\Quizzes\Translates\QuizTranslates;
 use Illuminate\Http\JsonResponse;
@@ -27,6 +32,22 @@ class QuizController extends Controller
 
         return Inertia::render('Quizzes/QuizCategories', ['categories' => $allCategories]);
     }
+    public function editCategories(QuizzesCategory $categories): Response
+    {
+        $allCategories = $categories->get()->toArray();
+
+        return Inertia::render('Quizzes/EditQuizCategories', ['categories' => $allCategories]);
+    }
+
+    public function editCategory(QuizzesCategory $quizzesCategory, Language $language, int $id): Response
+    {
+        $defaultLanguageId = Language::getDefaultLanguage()->id;
+        $category = $quizzesCategory->whereId($id)->with(['translations'])->firstOrFail()->toArray();
+        $languages = $language->select(['id', 'name', 'short_name', 'img_url'])->get()->toArray();
+        $category['language_id'] = $defaultLanguageId;
+
+        return Inertia::render('Quizzes/EditQuizCategory', ['category' => $category, 'languages' => $languages]);
+    }
 
     public function showCategory(Quiz $quizzes, $id): Response
     {
@@ -35,11 +56,28 @@ class QuizController extends Controller
         return Inertia::render('Quizzes/Quizzes', ['quizzes' => $allQuizzes]);
     }
 
-    public function showQuiz(Quiz $quiz): Response
+    public function deleteCategory(QuizzesCategory $quizzesCategory): JsonResponse
+    {
+        try {
+            $quizzesCategory->delete();
+
+            return response()->json([
+                'message' => 'Quizzes category deleted successfully.',
+                'id' => $quizzesCategory->id,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete the quizzes category.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function showQuiz(Quiz $quiz, int $id): Response
     {
         $user = Auth::user()->with('settings')->firstOrFail();
-        $languageId = 4;
-        $quiz = $quiz->with([
+        $languageId = $user->settings->languages_id;
+        $quiz = $quiz->whereId($id)->with([
                 'translations' => function ($query) use ($languageId) {
                     $query->where('language_id', $languageId);
                 },
@@ -57,6 +95,113 @@ class QuizController extends Controller
         return Inertia::render('Quizzes/Quiz', compact('quiz', 'user'));
     }
 
+    public function submitQuiz(SubmitRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        $response = [];
+        $score = 0;
+
+        foreach ($data as $question) {
+            $qq = QuizzesQuestion::whereId($question['question_id'])->first()->answers()->get()->toArray();
+
+            if (sizeof($qq) != sizeof($question['answers'])) {
+                return response()->json([
+                    'error' => 'Failed count answers.',
+                ], 500);
+            }
+
+            $point = true;
+
+            foreach ($question['answers'] as $key => $answer) {
+                if ($answer['answer'] != $qq[$key]['is_true']) {
+                    $point = false;
+                }
+            }
+
+            $score += $point;
+        }
+
+        $quizResult = new QuizResult();
+        $quizResult->quizzes_id = QuizzesQuestion::whereId($data[0]['question_id'])->first()->quizzes()->first()->id;
+        $quizResult->user_id = Auth::id();
+        $quizResult->score = $score;
+
+        $existingBestResult = QuizResult::where('quizzes_id', $quizResult->quizzes_id)
+            ->where('user_id', $quizResult->user_id)
+            ->where('is_best', true)
+            ->first();
+
+        if ($existingBestResult) {
+            if ($existingBestResult->score < $quizResult->score) {
+                $existingBestResult->is_best = false;
+                $existingBestResult->save();
+
+                $quizResult->is_best = true;
+            } else {
+                $quizResult->is_best = false;
+            }
+        } else {
+            $quizResult->is_best = true;
+        }
+
+        $quizResult->save();
+
+        $response['score'] = $score;
+        $response['is_best'] = $quizResult->is_best;
+
+        return response()->json($response);
+    }
+
+    public function saveQuizCategory(CreateCategoryRequest $request): JsonResponse
+    {
+        $data = $request->all();
+        $quizCategory = QuizzesCategory::create($data);
+        QuizCategoryTranslates::create([
+            'quizzes_categories_id' => $quizCategory->id,
+            'language_id' => $data['language_id'],
+            'name' => $data['name'],
+            'description' => $data['description'],
+        ]);
+
+        return response()->json(['id' => $quizCategory->id]);
+    }
+
+    public function updateCategory(UpdateCategoryRequest $request): JsonResponse
+    {
+        $data = $request->all();
+
+        $quizCategory = QuizzesCategory::find($data['id']);
+        if ($quizCategory) {
+            $quizCategory->makeHidden(['name', 'description', 'default_name', 'default_description']);
+            $quizCategory->update([
+                'img_url' => $data['img_url'],
+            ]);
+        }
+
+        foreach ($data['translations'] as $index => $translate) {
+            if ($translate['id'] ?? false) {
+                $quizTranslate = QuizCategoryTranslates::find($translate['id']);
+                if ($quizTranslate) {
+                    $quizTranslate->update([
+                        'description' => $translate['description'],
+                        'name' => $translate['name'],
+                    ]);
+                }
+            } else {
+                $quizTranslate = new QuizCategoryTranslates();
+                $quizTranslate->name = $translate['name'];
+                $quizTranslate->description = $translate['description'];
+                $quizTranslate->language_id = $translate['language_id'];
+                $quizTranslate->quizzes_categories_id = $translate['quizzes_categories_id'];
+                $quizTranslate->save();
+
+                $data['translations'][$index]['id'] = $quizTranslate->id;
+            }
+        }
+
+        return response()->json($data);
+    }
+
     public function deleteQuiz(Quiz $quiz): JsonResponse
     {
         try {
@@ -72,6 +217,18 @@ class QuizController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function createQuizCategory(Language $language, QuizzesCategory $quizzesCategory): Response
+    {
+        $allCategories = $quizzesCategory->select(['id'])->get()->toArray();
+        $languages = $language->select(['id', 'name', 'short_name', 'img_url'])->get()->toArray();
+
+        return Inertia::render('Quizzes/CreateQuizCategory', [
+            'categories' => $allCategories,
+            'defaultLanguage' => $language->getDefaultLanguage(),
+            'languages' => $languages,
+        ]);
     }
 
     public function createQuiz(Language $language, QuizzesCategory $quizzesCategory)
@@ -128,11 +285,6 @@ class QuizController extends Controller
 
     public function editQuiz(
         Quiz $quiz,
-        QuizTranslates $quizTranslates,
-        QuizzesQuestion $quizzesQuestion,
-        QuizQuestionTranslates $quizQuestionTranslates,
-        QuizQuestionAnswer $quizQuestionAnswer,
-        QuizAnswerTranslates $quizAnswerTranslates,
         QuizzesCategory $quizzesCategory,
         Language $language,
         int $id

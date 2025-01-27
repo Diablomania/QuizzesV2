@@ -4,6 +4,7 @@ namespace App\Models\Quizzes;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *
@@ -37,9 +38,24 @@ class QuizResult extends Model
         'quizzes_id', 'user_id', 'score', 'is_best', 'img_url'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($quizResult) {
+            if ($quizResult->img_url) {
+                $relativePath = str_replace('/storage/', '', $quizResult->img_url);
+
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+        });
+    }
+
     public function quizzes(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Quizzes\Quizzes');
+        return $this->belongsTo('App\Models\Quizzes\Quiz');
     }
 
     public function user(): BelongsTo

@@ -16,11 +16,11 @@ class CreateRequest extends FormRequest
             'description' => 'required|string|max:1000',
             'questions' => 'required|array|min:1',
             'questions.*.is_multi_answers' => 'required|boolean',
-            'questions.*.img_url' => 'nullable|string|url',
+            'questions.*.img_url' => 'nullable|string',
             'questions.*.question' => 'required|string|max:500',
             'questions.*.answers' => 'required|array|min:1',
             'questions.*.answers.*.is_true' => 'required|boolean',
-            'questions.*.answers.*.img_url' => 'nullable|string|url',
+            'questions.*.answers.*.img_url' => 'nullable|string',
             'questions.*.answers.*.answer' => 'required|string|max:255',
         ];
     }

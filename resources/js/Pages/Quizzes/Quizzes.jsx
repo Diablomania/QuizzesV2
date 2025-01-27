@@ -9,7 +9,7 @@ export default function QuizCategories({ quizzes }) {
             <Head title="Quizzes" />
 
                 <div className="mx-auto max-w-10xl">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="text-gray-900">
                             <div
                                 className="grid

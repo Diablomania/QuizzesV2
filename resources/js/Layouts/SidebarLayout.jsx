@@ -1,11 +1,12 @@
-import { usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Select from "@/Components/Form/Select.jsx";
 import DropdownHeaderMenu from "@/Components/DropdownHeaderMenu.jsx";
 import MainMenu from "@/Components/MainMenu/MainMenu.jsx";
+import { useTranslation } from "react-i18next";
 
 export default function SidebarLayout({ children }) {
+    const [t, i18n] = useTranslation();
     const [formData, setFormData] = useState({});
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +22,7 @@ export default function SidebarLayout({ children }) {
 
     const getLanguage = async () => {
         try {
-            const response = await axios.get("/languages");
+            const response = await axios.post("/get-auth-languages");
             const data = response.data;
 
             setData(data);
@@ -29,8 +30,9 @@ export default function SidebarLayout({ children }) {
                 ...prev,
                 language_id: data?.user?.settings?.languages_id || 1,
             }));
+            i18n.changeLanguage(response.data.languages.find(lang => lang.id === data?.user?.settings?.languages_id).short_name ?? navigator.language);
         } catch (error) {
-            console.log("Error getting language:", error);
+            console.error("Error getting language:", error);
         } finally {
             setIsLoading(false);
         }
@@ -47,15 +49,13 @@ export default function SidebarLayout({ children }) {
 
     useEffect(() => {
         const updateLanguage = async () => {
-            if (formData.language_id !== data.user.settings.languages_id) {
+            if (data && formData.language_id !== data.user?.settings?.languages_id) {
                 try {
                     await axios.post("/language", { language_id: formData.language_id });
                     window.location.reload();
                 } catch (error) {
                     console.log("Error setting language:", error);
                 }
-            } else {
-                console.log("Language is already up-to-date. No reload needed.");
             }
         };
 
@@ -76,19 +76,24 @@ export default function SidebarLayout({ children }) {
 
     return (
         <div>
-            <div className="flex h-screen bg-gray-100">
+            <div className="flex h-screen bg-gray-700">
                 {isVisible && windowWidth >= 768 && (
                     <div className="hidden md:flex flex-col w-64 bg-gray-800">
                         <div className="flex items-center justify-center h-16 bg-gray-900">
+                            <img
+                                className="rounded-lg h-14 p-1"
+                                src="/images/logo/logo.png"
+                                alt=""
+                            />
                             <span className="text-white font-bold uppercase">quizzes</span>
                         </div>
-                        <MainMenu />
+                        <MainMenu/>
                     </div>
                 )}
 
                 <div className="flex flex-col flex-1 overflow-y-auto">
-                    <div className="flex items-center justify-between h-16 bg-white border-b border-gray-200">
-                        <div className="flex items-center px-4">
+                    <div className="flex items-center justify-between h-16 border-b border-gray-900  bg-gray-800">
+                        <div className="flex items-center px-4 h-16">
                             <button
                                 className="text-gray-500 focus:outline-none focus:text-gray-700"
                                 onClick={toggleVisibility}
@@ -108,11 +113,6 @@ export default function SidebarLayout({ children }) {
                                     />
                                 </svg>
                             </button>
-                            <input
-                                className="mx-4 w-full border rounded-md px-4 py-2"
-                                type="text"
-                                placeholder="Search"
-                            ></input>
                         </div>
 
                         <div className="flex items-center justify-content-end">
@@ -130,7 +130,7 @@ export default function SidebarLayout({ children }) {
                     <div className="p-4 w-full">
                         {isVisible && windowWidth < 768 && <MainMenu />}
 
-                        <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:rounded-lg">
+                        <div className="mt-6 w-full overflow-hidden px-6 py-4 sm:rounded-lg bg-gray-700">
                             {children}
                         </div>
                     </div>

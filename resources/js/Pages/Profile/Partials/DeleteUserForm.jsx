@@ -6,8 +6,10 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
+import {useTranslation} from "react-i18next";
 
 export default function DeleteUserForm({ className = '' }) {
+    const [t] = useTranslation();
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const passwordInput = useRef();
 
@@ -48,39 +50,33 @@ export default function DeleteUserForm({ className = '' }) {
     return (
         <section className={`space-y-6 ${className}`}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
-                    Delete Account
+                <h2 className="text-lg font-medium text-gray-200">
+                    {t("editUser.deleteUserForm.header")}
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Before deleting your account,
-                    please download any data or information that you wish to
-                    retain.
+                <p className="mt-1 text-sm text-gray-400">
+                    {t("editUser.deleteUserForm.description")}
                 </p>
             </header>
 
             <DangerButton onClick={confirmUserDeletion}>
-                Delete Account
+                {t("editUser.deleteUserForm.deleteButton")}
             </DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
-                        Are you sure you want to delete your account?
+                        {t("editUser.deleteUserForm.modal.header")}
                     </h2>
 
                     <p className="mt-1 text-sm text-gray-600">
-                        Once your account is deleted, all of its resources and
-                        data will be permanently deleted. Please enter your
-                        password to confirm you would like to permanently delete
-                        your account.
+                        {t("editUser.deleteUserForm.modal.description")}
                     </p>
 
                     <div className="mt-6">
                         <InputLabel
                             htmlFor="password"
-                            value="Password"
+                            value={t("editUser.deleteUserForm.modal.password")}
                             className="sr-only"
                         />
 
@@ -106,11 +102,11 @@ export default function DeleteUserForm({ className = '' }) {
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
-                            Cancel
+                            {t("editUser.deleteUserForm.modal.cancelButton")}
                         </SecondaryButton>
 
                         <DangerButton className="ms-3" disabled={processing}>
-                            Delete Account
+                            {t("editUser.deleteUserForm.modal.deleteButton")}
                         </DangerButton>
                     </div>
                 </form>

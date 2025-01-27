@@ -2,6 +2,7 @@ import {useEffect} from "react";
 
 export default function Input({
       label,
+      id = "",
       input = "text",
       value = "",
       name = "name",
@@ -11,10 +12,10 @@ export default function Input({
 }) {
     return (
         <div className="mb-5">
-            { label && (<label htmlFor={input} className="block mb-2 text-sm font-medium capitalize text-gray-100 dark:text-gray-500">{label}</label>) }
+            { label && (<label htmlFor={input} className="block mb-2 text-sm font-medium capitalize text-gray-100 dark:text-gray-400">{label}</label>) }
             <input
                 type={input}
-                id={input}
+                id={id}
                 name={name}
                 value={value}
                 onChange={onChange}

@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import useLocalStorage from "@/hooks/useLocalStorage";
 import Icon from "@/Components/Icon.jsx";
 
-export default function SubMenu({ title, children, icon }) {
-    const [isMenuVisible, setMenuVisible] = useLocalStorage(title, false);
+export default function SubMenu({ title, children, icon, keyName }) {
+    const [isMenuVisible, setMenuVisible] = useLocalStorage(keyName, false);
 
     const toggleMenu = () => {
         setMenuVisible((prev) => !prev);

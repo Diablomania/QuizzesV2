@@ -3,6 +3,7 @@
 namespace App\Models\Quizzes;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *
@@ -32,6 +33,21 @@ class QuizQuestionAnswer extends Model
     protected $fillable = [
         'quizzes_questions_id', 'is_true', 'img_url'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($quizzesQuestionAnswer) {
+            if ($quizzesQuestionAnswer->img_url) {
+                $relativePath = str_replace('/storage/', '', $quizzesQuestionAnswer->img_url);
+
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+        });
+    }
 
     public function quizzesQuestion(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

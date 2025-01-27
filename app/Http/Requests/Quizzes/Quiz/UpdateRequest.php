@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
             'questions.*.id' => 'sometimes|integer|exists:quizzes_questions,id',
             'questions.*.quizzes_id' => 'sometimes|integer|exists:quizzes,id',
             'questions.*.is_multi_answers' => 'required|boolean',
-            'questions.*.img_url' => 'nullable|string|url',
+            'questions.*.img_url' => 'nullable|string',
 
             'questions.*.translations' => 'required|array|min:1',
             'questions.*.translations.*.id' => 'sometimes|integer|exists:quiz_question_translates,id',
@@ -36,7 +36,7 @@ class UpdateRequest extends FormRequest
             'questions.*.answers.*.id' => 'sometimes|integer|exists:quizzes_questions_answers,id',
             'questions.*.answers.*.quizzes_questions_id' => 'sometimes|integer|exists:quizzes_questions_answers,id',
             'questions.*.answers.*.is_true' => 'required|boolean',
-            'questions.*.answers.*.img_url' => 'nullable|string|url',
+            'questions.*.answers.*.img_url' => 'nullable|string',
 
             'questions.*.answers.*.translates' => 'required|array|min:1',
             'questions.*.answers.*.translates.*.id' => 'sometimes|integer|exists:quiz_question_answer_translates,id',
@@ -50,7 +50,6 @@ class UpdateRequest extends FormRequest
     {
         return [
             'category_id.required' => 'Ід категорії є обов\'язковою.',
-            'img_url.required' => 'Посиланн нв зображення є обов\'язковим.',
         ];
     }
 

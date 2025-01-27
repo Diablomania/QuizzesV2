@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *
@@ -31,4 +32,19 @@ class Style extends Model
     protected $fillable = [
         'name', 'img_url'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($style) {
+            if ($style->img_url) {
+                $relativePath = str_replace('/storage/', '', $style->img_url);
+
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+        });
+    }
 }

@@ -8,7 +8,7 @@ export default function QuizCategories({ categories }) {
             <Head title="Quiz Categories" />
 
                 <div className="mx-auto max-w-10xl">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="text-gray-900">
                             <div
                                 className="grid
@@ -30,7 +30,7 @@ export default function QuizCategories({ categories }) {
                                         ))}
                                     </>
                                 ) : (
-                                    <p className="text-gray-500">No categories available.</p>
+                                    <p className="text-gray-400">No categories available.</p>
                                 )}
                             </div>
                         </div>

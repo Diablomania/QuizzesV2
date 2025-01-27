@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Language;
-use App\Models\User;
 use App\Models\UserSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +11,13 @@ use Illuminate\Http\Request;
 class LanguageController extends Controller
 {
     public function getLanguages(Language $language): JsonResponse
+    {
+        $languages = $language->select(['id', 'name', 'short_name', 'img_url'])->get()->toArray();
+
+        return response()->json(compact('languages'));
+    }
+
+    public function getAuthLanguages(Language $language): JsonResponse
     {
         $user = Auth::user()->with('settings')->first();
         $languages = $language->select(['id', 'name', 'short_name', 'img_url'])->get()->toArray();

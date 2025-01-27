@@ -4,12 +4,14 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
+import {useTranslation} from "react-i18next";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
     status,
     className = '',
 }) {
+    const [t] = useTranslation();
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
@@ -27,18 +29,18 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
-                    Profile Information
+                <h2 className="text-lg font-medium text-gray-200">
+                    {t("editUser.updateProfileInformationForm.header")}
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
+                <p className="mt-1 text-sm text-gray-400">
+                    {t("editUser.updateProfileInformationForm.description")}
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value={t("editUser.updateProfileInformationForm.nameLabel")} />
 
                     <TextInput
                         id="name"
@@ -54,7 +56,7 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value={t("editUser.updateProfileInformationForm.emailLabel")} />
 
                     <TextInput
                         id="email"
@@ -79,21 +81,20 @@ export default function UpdateProfileInformation({
                                 as="button"
                                 className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
-                                Click here to re-send the verification email.
+                                {t("editUser.updateProfileInformationForm.reSendLink")}
                             </Link>
                         </p>
 
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 text-sm font-medium text-green-600">
-                                A new verification link has been sent to your
-                                email address.
+                                {t("editUser.updateProfileInformationForm.newVerificationLink")}
                             </div>
                         )}
                     </div>
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing}>{t("editUser.updateProfileInformationForm.saveButton")}</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -103,7 +104,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-gray-600">
-                            Saved.
+                            {t("editUser.updateProfileInformationForm.saved")}
                         </p>
                     </Transition>
                 </div>

@@ -1,0 +1,282 @@
+{
+    "name": "Quizzes",
+    "mainMenu": {
+        "quizzes": {
+            "name": "Quizzes",
+            "categories": "Quiz Categories",
+            "leaderboard": "Leaderboard"
+        },
+        "admin": {
+            "createNewQuiz": "Create New Quiz",
+            "name": "Admin",
+            "add": "Add Quiz Category",
+            "editQuizCategories": "Edit Quiz Categories"
+        },
+        "user": {
+            "name": "User",
+            "edit": "Edit",
+            "dashboard": "Dashboard"
+        },
+        "logOut": {
+            "name": "Log OUT"
+        }
+    },
+    "home": {
+        "head": "Welcome",
+        "login": "Log IN",
+        "register": "Registration"
+    },
+    "login": {
+        "head": "Log IN",
+        "login": "Log IN",
+        "register": "Registration",
+        "email": "Email",
+        "password": "Password",
+        "remember": "Remember me",
+        "forgot": "Forgot your password?",
+        "noAccount": "Don't have an account?"
+    },
+    "forgot": {
+        "head": "Forgot Password",
+        "remember": "Remembered the password?",
+        "resetButton": "Email Password Reset Link",
+        "description1": "Forgot your password?",
+        "description2": "No problem!",
+        "description3": "Just let us know your email address and we will email you a password reset link that will allow you to choose a new one."
+    },
+    "confirmPassword": {
+        "head": "Confirm Password",
+        "description": "This is a secure area of the application. Please confirm your password before continuing.",
+        "password": "Password",
+        "confirmButton": "Confirm"
+    },
+    "resetPassword": {
+        "head": "Reset Password",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "resetButton": "Reset Password"
+    },
+    "verifyEmail": {
+        "head": "Email Verification",
+        "send": "A new verification link has been sent to the email address you provided during registration.",
+        "resendButton": "Resend Verification Email",
+        "description1": "Thanks for signing up!",
+        "description2": "Before getting started, could you verify your email address by clicking on the link we just emailed to you?",
+        "description3": "If you didn't receive the email, we will gladly send you another."
+    },
+    "quiz": {
+        "noTranslation": "No translates for this quiz",
+        "addTranslateButton": "Add Translates",
+        "addNewQuizButton": "Add New Quiz",
+        "editQuizButton": "Edit Quiz",
+        "startQuizButton": "Start Quiz",
+        "deleteQuizButton": "Delete Quiz",
+        "nextButton": "Next Question",
+        "complete": "Quiz Complete",
+        "score": "Your score: ",
+        "again": "Start Again",
+        "bestResult": "This is your best result for this quiz",
+        "maxResult": "This is a max score for this quiz",
+        "modal": {
+            "title": "Are you sure?",
+            "text": "Do you really want to delete this quiz?",
+            "icon": "warning",
+            "confirmButtonText": "Yes, delete it!",
+            "cancelButtonText": "Cancel",
+            "confirmModal": {
+                "title": "Deleted!",
+                "text": "The quiz has been deleted.",
+                "icon": "success",
+                "confirmButtonText": "OK"
+            },
+            "error": {
+                "title": "Error",
+                "text": "Failed to delete the quiz. Please try again.",
+                "confirmButtonText": "OK"
+            }
+        },
+        "answerModal": {
+            "title": "Select Answer!",
+            "text": "Please select at least one answer before submitting!",
+            "confirmButtonText": "OK"
+        }
+    },
+    "createQuiz": {
+        "hey": "Let's make a quiz in ",
+        "quizCategory": "quiz category",
+        "quizName": "quiz name",
+        "quizDescription": "quiz description",
+        "quizImgUrl": "image url",
+        "addQuestionButton": "Add Question",
+        "questionLabel": "Question:",
+        "questionImageLabel": "Question image url",
+        "isMulti": "Is Multi:",
+        "addAnswerButton": "Add Answer",
+        "answerLabel": "Answer:",
+        "answerImageLabel": "Answer image url",
+        "isTrue": "Is True:",
+        "saveQuizButton": "Save Quiz"
+    },
+    "editCategories": {
+        "head": "Edit Quiz Categories",
+        "addNewCategoryButton": "Add new category",
+        "tableId": "ID",
+        "tableName": "Name",
+        "tableDescription": "Description",
+        "tableActions": "Actions",
+        "editButton": "edit",
+        "deleteButton": "delete",
+        "modal": {
+            "title": "Are you sure?",
+            "text": "Do you really want to delete this category?",
+            "icon": "warning",
+            "confirmButtonText": "Yes, delete it!",
+            "cancelButtonText": "Cancel",
+            "confirmModal": {
+                "title": "Deleted!",
+                "text": "The category has been deleted.",
+                "icon": "success",
+                "confirmButtonText": "OK"
+            }
+        }
+    },
+    "addQuizCategory": {
+        "head": "Create Quiz",
+        "title": "Let's make a quiz category in ",
+        "quizNameLabel": "quiz name",
+        "quizDescriptionLabel": "quiz description",
+        "quizImageUrlLabel": "image url",
+        "uploadFile": "Upload an image",
+        "useUrl": "Use an external URL",
+        "uploadImageLabel": "Choose an image to upload",
+        "saveQuizCategoryButton": "Save Quiz Category"
+    },
+    "editUser": {
+        "head": "Profile",
+        "updateProfileInformationForm": {
+            "header": "Profile Information",
+            "description": "Update your account's profile information and email address.",
+            "nameLabel": "Name",
+            "emailLabel": "Email",
+            "saveButton": "Save",
+            "reSendLink": "Click here to re-send the verification email.",
+            "newVerificationLink": "A new verification link has been sent to your email address.",
+            "saved": "Saved."
+        },
+        "updatePasswordForm": {
+            "header": "Update Password",
+            "description": "Ensure your account is using a long, random password to stay secure.",
+            "passwordLabel": "Current Password",
+            "newPassword": "New Password",
+            "confirmPasswordLabel": "Confirm Password",
+            "saveButton": "Save",
+            "saved": "Saved."
+        },
+        "deleteUserForm": {
+            "header": "Delete Account",
+            "description": "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.",
+            "deleteButton": "Delete Account",
+            "modal": {
+                "header": "Are you sure you want to delete your account?",
+                "description": "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",
+                "deleteButton": "Delete Account",
+                "cancelButton": "Cancel",
+                "password": "Password"
+            }
+        }
+    },
+    "dashboard": {
+        "head": "Dashboard",
+        "totalScore": "Total Score: ",
+        "totalScoreDescription": "Your total amount of points (true answers) in all quizzes!",
+        "bestQuiz": "Best quiz: ",
+        "bestQuizDescription": "Your best quiz is: ",
+        "tableId": "ID",
+        "tableName": "Name",
+        "tableDescription": "Description",
+        "tableBestScore": "Best Score",
+        "noQuizResults": "You dont have any quiz done."
+    },
+    "leaderboard": {
+        "head": "Leaderboard",
+        "totalScore": "Total Score: ",
+        "tableId": "ID",
+        "tableName": "Name",
+        "noQuizResults": "You dont have any quiz done."
+    },
+    "addQuizTranslation": {
+        "head": "Quiz Translates",
+        "translationForQuizId": "Translations For Quiz ID: ",
+        "quizName": "Quiz name: ",
+        "quizDescription": "Quiz descriptions: ",
+        "submitButton": "Submit",
+        "unknownLanguage": "Unknown Language",
+        "chooseTranslatedLanguage": "choose translated language",
+        "quizNameTranslate": "quiz name translate in ",
+        "quizDescriptionTranslate": "quiz description translate in ",
+        "questionLabel": "Question ",
+        "questionNoTranslationLabel": ": No translation available",
+        "quizQuestionTranslateIn": "quiz question translate in ",
+        "answerLabel": "Answer ",
+        "quizAnswerTranslateIn": "quiz answer translate in "
+    },
+    "editQuiz": {
+        "head": "Edit Quiz",
+        "title": "Let's edit a quiz",
+        "quizCategoryLabel": "quiz category",
+        "quizImageUrlLabel": "image url",
+        "quizName": "quiz name ",
+        "quizDescription": "quiz description ",
+        "addQuestionButton": "Add Question",
+        "questionLabel": "Question ",
+        "questionNoTranslationLabel": ": No translation available",
+        "questionImageUrlLabel": "Question image url",
+        "addAnswerLabel": "Add Answer",
+        "deleteButton": "Delete",
+        "answerLabel": "Answer ",
+        "answerImageUrlLabel": "Answer image url",
+        "isMulti": "Is Multi:",
+        "isTrue": "Is True:",
+        "unknownLanguage": "Unknown Language",
+        "saveQuizButton": "Save Quiz",
+        "deleteQuestionModal": {
+            "title": "Are you sure?",
+            "text": "Do you really want to delete this question?",
+            "icon": "warning",
+            "confirmButtonText": "Yes, delete it!",
+            "cancelButtonText": "Cancel",
+            "answer": {
+                "title": "Deleted!",
+                "text": "The question has been deleted.",
+                "icon": "success",
+                "confirmButtonText": "OK"
+            }
+        },
+        "deleteAnswerModal": {
+            "title": "Are you sure?",
+            "text": "Do you really want to delete this answer?",
+            "icon": "warning",
+            "confirmButtonText": "Yes, delete it!",
+            "cancelButtonText": "Cancel",
+            "answer": {
+                "title": "Deleted!",
+                "text": "The answer has been deleted.",
+                "icon": "success",
+                "confirmButtonText": "OK"
+            }
+        }
+    },
+    "dropDownMenu": {
+        "profile": "Profile",
+        "logOut": "Log Out"
+    },
+    "fileForm": {
+        "switchLabel": "External URL / Local File",
+        "rules": "PNG, JPG or other, smaller than 2MB",
+        "description": "Drag and Drop your file here or",
+        "button": "Choose File",
+        "preview": "Preview:",
+        "imgAlt": "Preview"
+    }
+}

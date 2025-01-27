@@ -1,0 +1,282 @@
+{
+    "name": "Вікторини",
+    "mainMenu": {
+        "quizzes": {
+            "name": "Вікторини",
+            "categories": "Категорії вікторин",
+            "leaderboard": "Таблиця лідерів"
+        },
+        "admin": {
+            "createNewQuiz": "Створити нову вікторину",
+            "name": "Адмін",
+            "add": "Додати категорію вікторини",
+            "editQuizCategories": "Редагувати категорії вікторини"
+        },
+        "user": {
+            "name": "Користувач",
+            "edit": "Редагувати",
+            "dashboard": "Панель Керування"
+        },
+        "logOut": {
+            "name": "Вийти"
+        }
+    },
+    "home": {
+        "head": "Вітаємо",
+        "login": "Вхід",
+        "register": "Реєстрація"
+    },
+    "login": {
+        "head": "Вхід",
+        "login": "Вхід",
+        "register": "Реєстрація",
+        "email": "Електронна пошта",
+        "password": "Пароль",
+        "remember": "Запамятати мене",
+        "forgot": "Забули пароль?",
+        "noAccount": "Досі не маєте аккаунту?"
+    },
+    "forgot": {
+        "head": "Забули пароль",
+        "remember": "Згадали пароль?",
+        "resetButton": "Відновлення пароля електронною поштою",
+        "description1": "Забули пароль?",
+        "description2": "Немає проблем!",
+        "description3": "Просто повідомте нам свою адресу електронної пошти, і ми надішлемо вам посилання для зміни пароля, за яким ви зможете вибрати новий."
+    },
+    "confirmPassword": {
+        "head": "Підтвердити пароль",
+        "description": "Це безпечна область програми. Перш ніж продовжити, підтвердьте свій пароль.",
+        "password": "Пароль",
+        "confirmButton": "Підтвердити"
+    },
+    "resetPassword": {
+        "head": "Скинути пароль",
+        "email": "Електронна пошта",
+        "password": "Пароль",
+        "confirmPassword": "Підтвердити пароль",
+        "resetButton": "Скинути пароль"
+    },
+    "verifyEmail": {
+        "head": "Підтвердження електронної пошти",
+        "send": "Новий лист для підтвердження було надіслано на електронну адресу, яку ви вказали під час реєстрації.",
+        "resendButton": "Повторно надіслати лист для підтвердження",
+        "description1": "Дякуємо за реєстрацію!",
+        "description2": "Перш ніж розпочати, підтвердіть, будь ласка, вашу електронну адресу, натиснувши на посилання, яке ми щойно вам надіслали.",
+        "description3": "Якщо ви не отримали лист, ми з радістю надішлемо вам ще один."
+    },
+    "quiz": {
+        "noTranslation": "Немає перекладів для цього тесту",
+        "addTranslateButton": "Додати переклади",
+        "addNewQuizButton": "Додати новий тест",
+        "editQuizButton": "Редагувати тест",
+        "startQuizButton": "Розпочати тест",
+        "deleteQuizButton": "Видалити тест",
+        "nextButton": "Наступне питання",
+        "complete": "Тест завершено",
+        "score": "Ваш результат: ",
+        "again": "Почати знову",
+        "bestResult": "Це ваш найкращий результат для цього тесту",
+        "maxResult": "Це максимальний бал для цього тесту",
+        "modal": {
+            "title": "Ви впевнені?",
+            "text": "Ви дійсно хочете видалити цей тест?",
+            "icon": "warning",
+            "confirmButtonText": "Так, видалити!",
+            "cancelButtonText": "Скасувати",
+            "confirmModal": {
+                "title": "Видалено!",
+                "text": "Тест було видалено.",
+                "icon": "success",
+                "confirmButtonText": "OK"
+            },
+            "error": {
+                "title": "Помилка",
+                "text": "Не вдалося видалити тест. Спробуйте ще раз.",
+                "confirmButtonText": "OK"
+            }
+        },
+        "answerModal": {
+            "title": "Обрати відповідь!",
+            "text": "Будь ласка, оберіть принаймні одну відповідь перед відправкою!",
+            "confirmButtonText": "OK"
+        }
+    },
+    "createQuiz": {
+        "hey": "Давайте створимо вікторину в ",
+        "quizCategory": "категорія вікторини",
+        "quizName": "назва вікторини",
+        "quizDescription": "опис вікторини",
+        "quizImgUrl": "URL зображення",
+        "addQuestionButton": "Додати запитання",
+        "questionLabel": "Запитання:",
+        "questionImageLabel": "URL зображення запитання",
+        "isMulti": "Множинний вибір:",
+        "addAnswerButton": "Додати відповідь",
+        "answerLabel": "Відповідь:",
+        "answerImageLabel": "URL зображення відповіді",
+        "isTrue": "Правильна відповідь:",
+        "saveQuizButton": "Зберегти вікторину"
+    },
+    "editCategories": {
+        "head": "Редагувати категорії вікторин",
+        "addNewCategoryButton": "Додати нову категорію",
+        "tableId": "ID",
+        "tableName": "Назва",
+        "tableDescription": "Опис",
+        "tableActions": "Дії",
+        "editButton": "редагувати",
+        "deleteButton": "видалити",
+        "modal": {
+            "title": "Ви впевнені?",
+            "text": "Ви дійсно хочете видалити цю категорію?",
+            "icon": "попередження",
+            "confirmButtonText": "Так, видалити!",
+            "cancelButtonText": "Скасувати",
+            "confirmModal": {
+                "title": "Видалено!",
+                "text": "Категорію було видалено.",
+                "icon": "успіх",
+                "confirmButtonText": "OK"
+            }
+        }
+    },
+    "addQuizCategory": {
+        "head": "Створити Вікторину",
+        "title": "Давайте створимо категорію вікторини в ",
+        "quizNameLabel": "назва вікторини",
+        "quizDescriptionLabel": "опис вікторини",
+        "quizImageUrlLabel": "URL зображення",
+        "uploadFile": "Завантажити зображення",
+        "useUrl": "Використовувати зовнішній URL",
+        "uploadImageLabel": "Виберіть зображення для завантаження",
+        "saveQuizCategoryButton": "Зберегти категорію вікторини"
+    },
+    "editUser": {
+        "head": "Профіль",
+        "updateProfileInformationForm": {
+            "header": "Інформація профілю",
+            "description": "Оновіть інформацію вашого профілю та електронну пошту.",
+            "nameLabel": "Ім'я",
+            "emailLabel": "Електронна пошта",
+            "saveButton": "Зберегти",
+            "reSendLink": "Натисніть тут, щоб повторно надіслати лист для підтвердження.",
+            "newVerificationLink": "Новий лист для підтвердження було надіслано на вашу електронну пошту.",
+            "saved": "Збережено."
+        },
+        "updatePasswordForm": {
+            "header": "Оновлення пароля",
+            "description": "Переконайтеся, що ваш обліковий запис використовує довгий, випадковий пароль для безпеки.",
+            "passwordLabel": "Поточний пароль",
+            "newPassword": "Новий пароль",
+            "confirmPasswordLabel": "Підтвердити пароль",
+            "saveButton": "Зберегти",
+            "saved": "Збережено."
+        },
+        "deleteUserForm": {
+            "header": "Видалення облікового запису",
+            "description": "Після видалення вашого облікового запису всі його ресурси та дані будуть назавжди видалені. Перед видаленням завантажте будь-які дані, які ви хочете зберегти.",
+            "deleteButton": "Видалити обліковий запис",
+            "modal": {
+                "header": "Ви впевнені, що хочете видалити свій обліковий запис?",
+                "description": "Після видалення вашого облікового запису всі його ресурси та дані будуть назавжди видалені. Будь ласка, введіть ваш пароль, щоб підтвердити видалення облікового запису.",
+                "deleteButton": "Видалити обліковий запис",
+                "cancelButton": "Скасувати",
+                "password": "Пароль"
+            }
+        }
+    },
+    "dashboard": {
+        "head": "Панель керування",
+        "totalScore": "Загальний рахунок: ",
+        "totalScoreDescription": "Ваша загальна кількість балів (правильних відповідей) у всіх вікторинах!",
+        "bestQuiz": "Найкраща вікторина: ",
+        "bestQuizDescription": "Ваша найкраща вікторина: ",
+        "tableId": "ID",
+        "tableName": "Назва",
+        "tableDescription": "Опис",
+        "tableBestScore": "Найкращий результат",
+        "noQuizResults": "У вас немає завершених вікторин."
+    },
+    "leaderboard": {
+        "head": "Таблиця лідерів",
+        "totalScore": "Загальний рахунок: ",
+        "tableId": "ID",
+        "tableName": "Ім'я",
+        "noQuizResults": "Ви ще не виконали жодної вікторини."
+    },
+    "addQuizTranslation": {
+        "head": "Переклади вікторини",
+        "translationForQuizId": "Переклади для вікторини з ID: ",
+        "quizName": "Назва вікторини: ",
+        "quizDescription": "Опис вікторини: ",
+        "submitButton": "Надіслати",
+        "unknownLanguage": "Невідома мова",
+        "chooseTranslatedLanguage": "виберіть мову для перекладу",
+        "quizNameTranslate": "назва вікторини перекладена на ",
+        "quizDescriptionTranslate": "опис вікторини перекладений на ",
+        "questionLabel": "Питання ",
+        "questionNoTranslationLabel": ": Переклад відсутній",
+        "quizQuestionTranslateIn": "питання вікторини перекладено на ",
+        "answerLabel": "Відповідь ",
+        "quizAnswerTranslateIn": "відповідь вікторини перекладено на "
+    },
+    "editQuiz": {
+        "head": "Редагувати вікторину",
+        "title": "Давайте відредагуємо вікторину",
+        "quizCategoryLabel": "категорія вікторини",
+        "quizImageUrlLabel": "URL зображення",
+        "quizName": "назва вікторини",
+        "quizDescription": "опис вікторини",
+        "addQuestionButton": "Додати питання",
+        "questionLabel": "Питання",
+        "questionNoTranslationLabel": ": Переклад відсутній",
+        "questionImageUrlLabel": "URL зображення питання",
+        "addAnswerLabel": "Додати відповідь",
+        "deleteButton": "Видалити",
+        "answerLabel": "Відповідь",
+        "answerImageUrlLabel": "URL зображення відповіді",
+        "isMulti": "Множинний вибір:",
+        "isTrue": "Правильна відповідь:",
+        "unknownLanguage": "Невідома мова",
+        "saveQuizButton": "Зберегти вікторину",
+        "deleteQuestionModal": {
+            "title": "Ви впевнені?",
+            "text": "Ви дійсно хочете видалити це питання?",
+            "icon": "попередження",
+            "confirmButtonText": "Так, видалити!",
+            "cancelButtonText": "Скасувати",
+            "answer": {
+                "title": "Видалено!",
+                "text": "Питання було видалено.",
+                "icon": "успіх",
+                "confirmButtonText": "OK"
+            }
+        },
+        "deleteAnswerModal": {
+            "title": "Ви впевнені?",
+            "text": "Ви дійсно хочете видалити цю відповідь?",
+            "icon": "попередження",
+            "confirmButtonText": "Так, видалити!",
+            "cancelButtonText": "Скасувати",
+            "answer": {
+                "title": "Видалено!",
+                "text": "Відповідь було видалено.",
+                "icon": "успіх",
+                "confirmButtonText": "OK"
+            }
+        }
+    },
+    "dropDownMenu": {
+        "profile": "Профіль",
+        "logOut": "Вийти"
+    },
+    "fileForm": {
+        "switchLabel": "Зовнішнє посилання / Локальний файл",
+        "rules": "PNG, JPG або інші, менше 2MB",
+        "description": "Перетягніть файл сюди або",
+        "button": "Вибрати файл",
+        "preview": "Попередній перегляд:",
+        "imgAlt": "Попередній перегляд"
+    }
+}
