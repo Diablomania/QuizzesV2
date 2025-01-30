@@ -7,7 +7,7 @@ import Icon from "@/Components/Icon.jsx";
 import {useTranslation} from "react-i18next";
 
 export default function MainMenu() {
-    const isAdmin = !!(usePage().props.auth.user.is_admin) ?? false;
+    const isAdmin = !!(usePage().props.auth.user.is_admin);
     const [t] = useTranslation();
 
     const handleLogout = (e) => {

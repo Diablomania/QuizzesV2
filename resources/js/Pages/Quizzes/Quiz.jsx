@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 
 export default function QuizCategories({ quiz, user }) {
-    const isAdmin = !!(usePage().props.auth.user.is_admin) ?? false;
+    const isAdmin = !!(usePage().props.auth.user.is_admin);
     const [t] = useTranslation();
     const userLanguage = navigator.language || navigator.languages[0];
     const [imgSrc, setImgSrc] = useState(quiz.img_url);

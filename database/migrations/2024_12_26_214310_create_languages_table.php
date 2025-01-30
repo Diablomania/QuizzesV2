@@ -38,6 +38,14 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'deutsch',
+                'short_name' => 'de',
+                'img_url' => null,
+                'is_default' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 
