@@ -19,7 +19,7 @@ class LanguageController extends Controller
 
     public function getAuthLanguages(Language $language): JsonResponse
     {
-        $user = Auth::user()->with('settings')->first();
+        $user = Auth::user()->load('settings');
         $languages = $language->select(['id', 'name', 'short_name', 'img_url'])->get()->toArray();
 
         return response()->json(compact('languages', 'user'));
