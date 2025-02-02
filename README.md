@@ -51,3 +51,8 @@ Use the `ADMIN_EMAIL` and `ADMIN_PASSWORD` from the `.env` file to log in.
 If you encounter permission issues, you may need to adjust file permissions:
 ```sh
 sudo chmod -R 777 storage
+```
+
+---
+
+### **Made by [Roman Tsmokh](https://www.linkedin.com/in/romantsmokh/)**
