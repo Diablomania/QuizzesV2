@@ -75,7 +75,7 @@ class QuizController extends Controller
 
     public function showQuiz(Quiz $quiz, int $id): Response
     {
-        $user = Auth::user()->with('settings')->firstOrFail();
+        $user = Auth::user()->load('settings');
         $languageId = $user->settings->languages_id;
         $quiz = $quiz->whereId($id)->with([
                 'translations' => function ($query) use ($languageId) {
