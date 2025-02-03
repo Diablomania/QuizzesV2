@@ -31,7 +31,7 @@ export default function Dashboard({quizResults, totalBestScore, bestScoreResult}
                                     />
                                     <DashboardItem
                                         icon={
-                                            <svg className="w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
+                                            <svg className="w-12 h-12 text-white" aria-hidden="true"
                                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                                  viewBox="0 0 24 24">
                                                 <path d="M11 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"/>
@@ -50,7 +50,7 @@ export default function Dashboard({quizResults, totalBestScore, bestScoreResult}
 
 
                         <div className="mt-2 relative overflow-x-auto rounded-lg">
-                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <table className="w-full text-sm text-left rtl:text-right text-gray-400">
                                 <thead className="text-xs uppercase bg-gray-900 text-gray-400">
                                 <tr>
                                     <th scope="col" className="px-6 py-3">
